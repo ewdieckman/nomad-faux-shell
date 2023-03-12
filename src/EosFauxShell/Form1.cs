@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace EosFauxShell
 {
-    public partial class Form1 : Form
+    public partial class Form1 : NomadForm
     {
         private readonly FormState _formState;
         private bool _altF4Pressed;
@@ -27,22 +28,9 @@ namespace EosFauxShell
             this.KeyDown += Form1_KeyDown;
             this.FormClosing += Form1_FormClosing;
 
-            // set back color
-            this.BackColor = Color.FromArgb(5, 5, 5);
 
+            CheckExistingPassword();
 
-
-
-
-            //_launchProcess = Process.Start("C:\\Program Files\\ETC\\EosFamily\\v3\\ETC_Launch\\ETC_LaunchOffline.exe");
-            //Thread.Sleep(2000); // Allow the process to open it's window
-            //p.WaitForInputIdle();
-
-            //var _launchWindow = _launchProcess.MainWindowHandle;
-            //SetParent(_launchWindow, this.Handle);
-
-            //// Remove border and whatnot
-            //SetWindowLong(_launchWindow, GWL_STYLE, WS_VISIBLE);
         }
         /// <summary>
         /// Clean up any resources being used.
@@ -157,6 +145,27 @@ namespace EosFauxShell
         private void btnExit_Click(object? sender, EventArgs e)
         {
             this.Close();
+        }
+
+        /// <summary>
+        /// Checks if there is an existing password set.  If not, it launches the SetInitialPassword method
+        /// </summary>
+        private void CheckExistingPassword()
+        {
+            var storedPassword = RegistryHelper.RetrievePassword();
+
+            if (storedPassword == null) SetInitialPassword();
+        }
+
+        /// <summary>
+        /// Prompts user to set the initial password
+        /// </summary>
+        private void SetInitialPassword()
+        {
+            Form f = new FormSetPassword();
+            f.StartPosition = FormStartPosition.CenterScreen;
+            f.ShowDialog();
+
         }
     }
 }

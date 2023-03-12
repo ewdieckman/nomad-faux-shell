@@ -24,6 +24,7 @@ namespace EosFauxShell
         public PasswordHasher()
         {
             _rng = RandomNumberGenerator.Create();
+            _iterCount = 100_000;
         }
 
         /// <summary>
@@ -62,6 +63,51 @@ namespace EosFauxShell
             Buffer.BlockCopy(salt, 0, outputBytes, 13, salt.Length);
             Buffer.BlockCopy(subkey, 0, outputBytes, 13 + saltSize, subkey.Length);
             return outputBytes;
+        }
+
+
+        /// <summary>
+        /// Returns a <see cref="PasswordVerificationResult"/> indicating the result of a password hash comparison.
+        /// </summary>
+        /// <param name="user">The user whose password should be verified.</param>
+        /// <param name="hashedPassword">The hash value for a user's stored password.</param>
+        /// <param name="providedPassword">The password supplied for comparison.</param>
+        /// <returns>A <see cref="PasswordVerificationResult"/> indicating the result of a password hash comparison.</returns>
+        /// <remarks>Implementations of this method should be time consistent.</remarks>
+        public  PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
+        {
+            if (hashedPassword == null) throw new ArgumentNullException(nameof(hashedPassword));
+            if (providedPassword == null) throw new ArgumentNullException(nameof(providedPassword));
+
+            byte[] decodedHashedPassword = Convert.FromBase64String(hashedPassword);
+
+            // read the format marker from the hashed password
+            if (decodedHashedPassword.Length == 0)
+            {
+                return PasswordVerificationResult.Failed;
+            }
+
+            if (VerifyHashedPasswordV3(decodedHashedPassword, providedPassword, out int embeddedIterCount, out KeyDerivationPrf prf))
+            {
+                // If this hasher was configured with a higher iteration count, change the entry now.
+                if (embeddedIterCount < _iterCount)
+                {
+                    return PasswordVerificationResult.SuccessRehashNeeded;
+                }
+
+                // V3 now requires SHA512. If the old PRF is SHA1 or SHA256, upgrade to SHA512 and rehash.
+                if (prf == KeyDerivationPrf.HMACSHA1 || prf == KeyDerivationPrf.HMACSHA256)
+                {
+                    return PasswordVerificationResult.SuccessRehashNeeded;
+                }
+
+                return PasswordVerificationResult.Success;
+            }
+            else
+            {
+                return PasswordVerificationResult.Failed;
+            }
+
         }
 
         private static bool VerifyHashedPasswordV3(byte[] hashedPassword, string password, out int iterCount, out KeyDerivationPrf prf)
