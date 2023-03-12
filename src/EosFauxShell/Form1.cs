@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Win32;
 
 namespace EosFauxShell
@@ -14,6 +15,7 @@ namespace EosFauxShell
         private const int buttonRowHeight = 55;
         private const int addOnButtonsTop = 336;
         private const int nomadButtonsLeftFromRightEdge = 542;
+        private const string defaultEtcLaunchLocation = @"C:\Program Files\ETC\EosFamily\v3\ETC_Launch\ETC_LaunchOffline.exe";
         private int _addOnButtonsLeft = 0;
 
         private int _windowWidth;
@@ -22,9 +24,8 @@ namespace EosFauxShell
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-        private NomadButton btnRestore;
         private NomadButton btnMaximize;
-        private NomadButton btnExit;
+        private NomadButton btnAdmin;
         private ApplicationControl _applicationControl;
 
         public Form1()
@@ -49,6 +50,7 @@ namespace EosFauxShell
 
             CheckExistingPassword();
 
+            _formState.Maximize(this);
         }
         /// <summary>
         /// Clean up any resources being used.
@@ -68,15 +70,16 @@ namespace EosFauxShell
         private void InitializeComponent()
         {
             _applicationControl = new ApplicationControl();
-            btnRestore = new NomadButton();
             btnMaximize = new NomadButton();
-            btnExit = new NomadButton();
+            btnAdmin = new NomadButton();
             SuspendLayout();
             // 
             // _applicationControl
             // 
             _applicationControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            _applicationControl.ExeName = "C:\\Program Files\\ETC\\EosFamily\\v3\\ETC_Launch\\ETC_LaunchOffline.exe";
+            var launcherExeLocation = Program.Configuration.GetSection("ETCLauncher").Value;
+            if (string.IsNullOrEmpty(launcherExeLocation)) launcherExeLocation = defaultEtcLaunchLocation;
+            _applicationControl.ExeName = launcherExeLocation;
             _applicationControl.Location = new Point(29, 30);
             _applicationControl.Name = "_applicationControl";
             _applicationControl.Size = new Size(_windowWidth, 450);
@@ -86,35 +89,25 @@ namespace EosFauxShell
             // bottom row is 55px to the bottom of the current column
 
             // 
-            // btnRestore
-            // 
-            btnRestore.Location = new Point(_addOnButtonsLeft, addOnButtonsTop);
-            btnRestore.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnRestore.Name = "btnRestore";
-            btnRestore.Size = new Size(103, 38);
-            btnRestore.TabIndex = 1;
-            btnRestore.Text = "Restore";
-            btnRestore.Click += btnRestore_Click;
-            // 
             // btnMaximize
             // 
             btnMaximize.Location = new Point(_addOnButtonsLeft + buttonColumnWidth, addOnButtonsTop);
             btnMaximize.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnMaximize.Name = "btnMaximize";
+            btnMaximize.Name = "btnShutdown";
             btnMaximize.Size = new Size(103, 38);
             btnMaximize.TabIndex = 2;
-            btnMaximize.Text = "Maximize";
-            btnMaximize.Click += btnMaximize_Click;
+            btnMaximize.Text = "Shutdown";
+            btnMaximize.Click += btnShutdown_Click;
             // 
-            // btnExit
+            // btnAdmin
             // 
-            btnExit.Location = new Point(_addOnButtonsLeft, addOnButtonsTop + buttonRowHeight);
-            btnExit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnExit.Name = "btnExit";
-            btnExit.Size = new Size(103, 38);
-            btnExit.TabIndex = 3;
-            btnExit.Text = "Exit";
-            btnExit.Click += btnExit_Click;
+            btnAdmin.Location = new Point(_addOnButtonsLeft + (buttonColumnWidth * 3), addOnButtonsTop + (buttonRowHeight * 2));
+            btnAdmin.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAdmin.Name = "btnAdmin";
+            btnAdmin.Size = new Size(103, 38);
+            btnAdmin.TabIndex = 3;
+            btnAdmin.Text = "*Admin*";
+            btnAdmin.Click += btnAdmin_Click;
             // 
             // Form1
             // 
@@ -122,9 +115,8 @@ namespace EosFauxShell
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(_windowWidth, 525);
             KeyPreview = true;
-            Controls.Add(btnExit);
+            Controls.Add(btnAdmin);
             Controls.Add(btnMaximize);
-            Controls.Add(btnRestore);
             Controls.Add(_applicationControl);
             Name = "Form1";
             Text = "ETCnomad Faux Shell";
@@ -158,14 +150,16 @@ namespace EosFauxShell
             _formState.Restore(this);
         }
 
-        private void btnMaximize_Click(object? sender, EventArgs e)
+        private void btnShutdown_Click(object? sender, EventArgs e)
         {
-            _formState.Maximize(this);
+            var f = new FormConfirmShutdown(this);
+            f.ShowDialog();
         }
 
-        private void btnExit_Click(object? sender, EventArgs e)
+        private void btnAdmin_Click(object? sender, EventArgs e)
         {
-            this.Close();
+            var f = new FormEnterPassword(this);
+            f.ShowDialog();
         }
 
         /// <summary>

@@ -16,6 +16,7 @@ namespace EosFauxShell
             FlatAppearance.BorderColor = Color.FromArgb(59, 59, 59);
             ForeColor = Color.FromArgb(255,255,255);
             FlatStyle = FlatStyle.Flat;
+            Size = new Size(103, 38);
             Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
 
         }
