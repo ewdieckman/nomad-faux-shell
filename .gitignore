@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/aspnetcore,dotnetcore
 # Edit at https://www.toptal.com/developers/gitignore?templates=aspnetcore,dotnetcore
 
+# EOS ini files
+eos-*.ini
+
 
 ### ASPNETCore ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -283,6 +286,3 @@ obj/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore,dotnetcore
 
-# EOS ini files
-ini/eos*.ini
-*.ini
