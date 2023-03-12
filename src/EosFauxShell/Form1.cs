@@ -12,7 +12,9 @@ namespace EosFauxShell
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.Container components = null;
-
+        private NomadButton btnRestore;
+        private NomadButton btnMaximize;
+        private NomadButton btnExit;
         private ApplicationControl _applicationControl;
 
         public Form1()
@@ -59,48 +61,69 @@ namespace EosFauxShell
 
         private void InitializeComponent()
         {
-            // testing embedding app
-            this._applicationControl = new ApplicationControl();
-            this.SuspendLayout();
+            _applicationControl = new ApplicationControl();
+            btnRestore = new NomadButton();
+            btnMaximize = new NomadButton();
+            btnExit = new NomadButton();
+            SuspendLayout();
             // 
-            // applicationControl1
+            // _applicationControl
             // 
-            this._applicationControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                | System.Windows.Forms.AnchorStyles.Left)
-                | System.Windows.Forms.AnchorStyles.Right)));
-            this._applicationControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this._applicationControl.ExeName = "C:\\Program Files\\ETC\\EosFamily\\v3\\ETC_Launch\\ETC_LaunchOffline.exe";
-            this._applicationControl.Location = new System.Drawing.Point(24, 24);
-            this._applicationControl.Name = "applicationControl1";
-            this._applicationControl.Size = new System.Drawing.Size(1550, 650);
-            this._applicationControl.TabIndex = 0;
+            _applicationControl.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            _applicationControl.ExeName = "C:\\Program Files\\ETC\\EosFamily\\v3\\ETC_Launch\\ETC_LaunchOffline.exe";
+            _applicationControl.Location = new Point(29, 30);
+            _applicationControl.Name = "_applicationControl";
+            _applicationControl.Size = new Size(1000, 450);
+            _applicationControl.TabIndex = 0;
+
+            // right column is 120px to the right of the left column
+            // bottom row is 55px to the bottom of the current column
+
+            // 
+            // btnRestore
+            // 
+            btnRestore.Location = new Point(663, 336);
+            btnRestore.Name = "btnRestore";
+            btnRestore.Size = new Size(103, 38);
+            btnRestore.TabIndex = 1;
+            btnRestore.Text = "Restore";
+            btnRestore.Click += btnRestore_Click;
+            // 
+            // btnMaximize
+            // 
+            btnMaximize.Location = new Point(783, 336);
+            btnMaximize.Name = "btnMaximize";
+            btnMaximize.Size = new Size(103, 38);
+            btnMaximize.TabIndex = 2;
+            btnMaximize.Text = "Maximize";
+            btnMaximize.Click += btnMaximize_Click;
+            // 
+            // btnExit
+            // 
+            btnExit.Location = new Point(663, 391);
+            btnExit.Name = "btnExit";
+            btnExit.Size = new Size(103, 38);
+            btnExit.TabIndex = 3;
+            btnExit.Text = "Exit";
+            btnExit.Click += btnExit_Click;
             // 
             // Form1
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(1600, 700);
-            this.Controls.Add(this._applicationControl);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1600, 700);
+            KeyPreview = true;
+            Controls.Add(btnExit);
+            Controls.Add(btnMaximize);
+            Controls.Add(btnRestore);
+            Controls.Add(_applicationControl);
+            Name = "Form1";
+            Text = "ETCnomad Faux Shell";
+            ResumeLayout(false);
         }
 
 
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            _formState.Maximize(this);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            _formState.Restore(this);
-        }
 
         void Form1_KeyDown(object? sender, KeyEventArgs e)
         {
@@ -117,8 +140,23 @@ namespace EosFauxShell
                 _altF4Pressed = false;
             }
 
-            
+
         }
 
+ 
+        private void btnRestore_Click(object? sender, EventArgs e)
+        {
+            _formState.Restore(this);
+        }
+
+        private void btnMaximize_Click(object? sender, EventArgs e)
+        {
+            _formState.Maximize(this);
+        }
+
+        private void btnExit_Click(object? sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

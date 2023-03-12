@@ -134,11 +134,11 @@ namespace EosFauxShell
 
                     
                     // this is needed or Nomad won't work properly
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
 
                     // Wait for process to be created and enter idle condition
                     p.WaitForInputIdle();
-
+                    
                     // Get the main handle
                     appWin = p.MainWindowHandle;
                 }
