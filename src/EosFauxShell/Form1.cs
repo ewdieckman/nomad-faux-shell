@@ -9,6 +9,15 @@ namespace EosFauxShell
         private readonly FormState _formState;
         private bool _altF4Pressed;
 
+        private const int minimumWindowsWidth = 1024;
+        private const int buttonColumnWidth = 120;
+        private const int buttonRowHeight = 55;
+        private const int addOnButtonsTop = 336;
+        private const int nomadButtonsLeftFromRightEdge = 542;
+        private int _addOnButtonsLeft = 0;
+
+        private int _windowWidth;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -20,6 +29,14 @@ namespace EosFauxShell
 
         public Form1()
         {
+            var screenWidth = Screen.FromControl(this).Bounds.Width;
+
+            if (screenWidth < minimumWindowsWidth)
+                _windowWidth = minimumWindowsWidth;
+
+            _windowWidth = screenWidth - 100;
+            _addOnButtonsLeft = _windowWidth - nomadButtonsLeftFromRightEdge;
+
             InitializeComponent();
             _formState = new FormState();
             _altF4Pressed = false;
@@ -27,6 +44,7 @@ namespace EosFauxShell
             // wire up events
             this.KeyDown += Form1_KeyDown;
             this.FormClosing += Form1_FormClosing;
+
 
 
             CheckExistingPassword();
@@ -57,11 +75,11 @@ namespace EosFauxShell
             // 
             // _applicationControl
             // 
-            _applicationControl.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            _applicationControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             _applicationControl.ExeName = "C:\\Program Files\\ETC\\EosFamily\\v3\\ETC_Launch\\ETC_LaunchOffline.exe";
             _applicationControl.Location = new Point(29, 30);
             _applicationControl.Name = "_applicationControl";
-            _applicationControl.Size = new Size(1000, 450);
+            _applicationControl.Size = new Size(_windowWidth, 450);
             _applicationControl.TabIndex = 0;
 
             // right column is 120px to the right of the left column
@@ -70,7 +88,8 @@ namespace EosFauxShell
             // 
             // btnRestore
             // 
-            btnRestore.Location = new Point(663, 336);
+            btnRestore.Location = new Point(_addOnButtonsLeft, addOnButtonsTop);
+            btnRestore.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnRestore.Name = "btnRestore";
             btnRestore.Size = new Size(103, 38);
             btnRestore.TabIndex = 1;
@@ -79,7 +98,8 @@ namespace EosFauxShell
             // 
             // btnMaximize
             // 
-            btnMaximize.Location = new Point(783, 336);
+            btnMaximize.Location = new Point(_addOnButtonsLeft + buttonColumnWidth, addOnButtonsTop);
+            btnMaximize.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnMaximize.Name = "btnMaximize";
             btnMaximize.Size = new Size(103, 38);
             btnMaximize.TabIndex = 2;
@@ -88,7 +108,8 @@ namespace EosFauxShell
             // 
             // btnExit
             // 
-            btnExit.Location = new Point(663, 391);
+            btnExit.Location = new Point(_addOnButtonsLeft, addOnButtonsTop + buttonRowHeight);
+            btnExit.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnExit.Name = "btnExit";
             btnExit.Size = new Size(103, 38);
             btnExit.TabIndex = 3;
@@ -99,7 +120,7 @@ namespace EosFauxShell
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1600, 700);
+            ClientSize = new Size(_windowWidth, 525);
             KeyPreview = true;
             Controls.Add(btnExit);
             Controls.Add(btnMaximize);
@@ -162,8 +183,9 @@ namespace EosFauxShell
         /// </summary>
         private void SetInitialPassword()
         {
-            Form f = new FormSetPassword();
+            var f = new FormSetPassword();
             f.StartPosition = FormStartPosition.CenterScreen;
+            f.HideCancel(true);
             f.ShowDialog();
 
         }

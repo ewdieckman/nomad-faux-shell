@@ -16,8 +16,8 @@ namespace EosFauxShell
         {
             InitializeComponent();
 
-            textBoxVerify.LostFocus += textBoxVerify_LostFocus;
-            textBoxPassword.LostFocus += textBoxPassword_LostFocus;
+            ActiveControl = textBoxPassword;
+
 
         }
 
@@ -29,15 +29,6 @@ namespace EosFauxShell
         public void HideCancel(bool hide)
         {
             buttonCancel.Visible = !hide;
-        }
-
-        private void textBoxVerify_LostFocus(object? sender, EventArgs e)
-        {
-
-        }
-        private void textBoxPassword_LostFocus(object? sender, EventArgs e)
-        {
-
         }
 
         private void buttonSet_Click(object sender, EventArgs e)

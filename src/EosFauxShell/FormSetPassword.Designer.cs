@@ -72,6 +72,7 @@
             textBoxPassword.Name = "textBoxPassword";
             textBoxPassword.Size = new Size(177, 23);
             textBoxPassword.TabIndex = 2;
+            textBoxPassword.UseSystemPasswordChar = true;
             // 
             // labelInstructions
             // 
@@ -89,6 +90,7 @@
             textBoxVerify.Name = "textBoxVerify";
             textBoxVerify.Size = new Size(177, 23);
             textBoxVerify.TabIndex = 4;
+            textBoxVerify.UseSystemPasswordChar = true;
             // 
             // labelPassword
             // 
@@ -127,6 +129,7 @@
             // 
             // FormSetPassword
             // 
+            AcceptButton = buttonSet;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(326, 250);
