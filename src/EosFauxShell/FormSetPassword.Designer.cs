@@ -150,7 +150,9 @@
             ShowIcon = false;
             ShowInTaskbar = false;
             SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Set Password";
+            TopMost = true;
             ResumeLayout(false);
             PerformLayout();
         }

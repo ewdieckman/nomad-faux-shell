@@ -37,6 +37,8 @@ namespace EosFauxShell
             if (result)
             {
                 RegistryHelper.SetPassword(textBoxPassword.Text.Trim());
+
+                MessageBox.Show("Password set!", "Admin Password", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
         }

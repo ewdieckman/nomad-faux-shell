@@ -41,7 +41,12 @@
         /// </summary>
         void SuccessfulPassword()
         {
+            this.Hide();
             // show the Admin form
+            var f = new FormAdmin(_callingForm);
+            f.FormClosed += (s, args) => Close();  // close this form when the admin form closes
+            f.ShowDialog();
+
         }
 
         /// <summary>
