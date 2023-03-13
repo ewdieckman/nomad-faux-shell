@@ -1,0 +1,1 @@
+When deploying as a custom shell - dialog boxes (like the visualizer question) and the actual EOS software itself, launches underneath the shell.   There is no way to switch to it without killing the shell, which then kills EOS
