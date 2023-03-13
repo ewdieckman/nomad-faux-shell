@@ -57,7 +57,7 @@
             buttonSetPassword.Name = "buttonSetPassword";
             buttonSetPassword.Size = new Size(103, 38);
             buttonSetPassword.TabIndex = 1;
-            buttonSetPassword.Text = "SetPassword";
+            buttonSetPassword.Text = "Set Password";
             buttonSetPassword.UseVisualStyleBackColor = true;
             buttonSetPassword.Click += buttonSetPassword_Click;
             // 

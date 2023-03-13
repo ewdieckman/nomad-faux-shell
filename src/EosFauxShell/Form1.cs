@@ -94,7 +94,6 @@ namespace EosFauxShell
             btnMaximize.Location = new Point(_addOnButtonsLeft + buttonColumnWidth, addOnButtonsTop);
             btnMaximize.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnMaximize.Name = "btnShutdown";
-            btnMaximize.Size = new Size(103, 38);
             btnMaximize.TabIndex = 2;
             btnMaximize.Text = "Shutdown";
             btnMaximize.Click += btnShutdown_Click;
@@ -104,7 +103,6 @@ namespace EosFauxShell
             btnAdmin.Location = new Point(_addOnButtonsLeft + (buttonColumnWidth * 3), addOnButtonsTop + (buttonRowHeight * 2));
             btnAdmin.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnAdmin.Name = "btnAdmin";
-            btnAdmin.Size = new Size(103, 38);
             btnAdmin.TabIndex = 3;
             btnAdmin.Text = "*Admin*";
             btnAdmin.Click += btnAdmin_Click;
